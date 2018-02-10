@@ -20,7 +20,9 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
                           ConversationHandler)
 
 import logging
-
+from firebase import firebase
+firebase = firebase.FirebaseApplication('https://surakshit-11.firebaseio.com')
+data_d={}
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -41,6 +43,8 @@ def start(bot, update):
 
 def depart(bot, update):
     user = update.message.from_user
+    data_d['dept']= update.message.text
+    data_d['name']=user.first_name
     logger.info("Department of %s: %s", user.first_name, update.message.text)
     update.message.reply_text('I see! Please send me your phone number.',
                               reply_markup=ReplyKeyboardRemove())
@@ -49,6 +53,7 @@ def depart(bot, update):
 
 def phone(bot, update):
     user = update.message.from_user
+    data_d['mobile']=update.message.text
     logger.info("Phone number of %s: %s", user.first_name, update.message.text)
     update.message.reply_text('Thanks! Now, send me your location please,')
 
@@ -58,10 +63,12 @@ def phone(bot, update):
 def location(bot, update):
     user = update.message.from_user
     user_location = update.message.location
+    data_d['loc']=str(user_location.latitude)+','+str(user_location.longitude)
     logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude,
                 user_location.longitude)
     update.message.reply_text('Thanks, you have been succesfully registered!')
-
+    print(data_d)
+    result  = firebase.post('/provider',data_d)
     return ConversationHandler.END
 
 
@@ -109,7 +116,7 @@ def main():
 
     # Start the Bot
     updater.start_polling()
-
+   
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
