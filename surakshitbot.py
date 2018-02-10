@@ -9,29 +9,15 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(7)
+ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE = range(6)
 
-def intro(bot, update):
+def start(bot, update):
 	reply_keyboard = [['Fire', 'Health', 'Police']]
 
 	update.message.reply_text('Hello, and welcome to Surakshit! \n' 'Please select what kind of assistace do you require: ',
 		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 	return ASSIST
-
-# def start(bot, update):
-# 	reply_keyboard = [['YES', 'NO']]
-
-# 	update.message.reply_text('Hello, and welcome to Surakshit!',
-# 		'Do you require any assistance?',
-# 		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-
-# 	return ASSIST
-
-# def begin(bot, update):
-# 	update.message.reply_text('Hello, and welcome to Surakshit!')
-
-# 	return ASSIST
 
 def assist(bot, update):
 	user = update.message.from_user
@@ -40,16 +26,6 @@ def assist(bot, update):
 		reply_markup=ReplyKeyboardRemove())
 
 	return LOCATE
-
-# def not_assist(bot, update):
-# 	user = update.message.from_user
-# 	logger.info("User %s does not require assistance.", user.first_name)
-# 	update.message.reply_text(
-# 		'Send /start if you want to re-initiate the chat!'
-# 		'Stay safe, Stay Happy.',
-# 		reply_markup=ReplyKeyboardRemove())
-
-# 	return ConversationHandler.END
 
 def locate(bot, update):
 	user = update.message.from_user
@@ -63,7 +39,7 @@ def locate(bot, update):
 def skip_locate(bot, update):
 	user = update.message.from_user
 	logger.info("User %s did not send a location.", user.first_name)
-	update.message.reply_text('No worries. '
+	update.message.reply_text('No worries. \n'
 		'Please tell us the address where you require assistance.')
 
 	return ADDRESS
@@ -93,8 +69,8 @@ def pic(bot, update):
 def skip_pic(bot, update):
 	user = update.message.from_user
 	logger.info("User %s did not send a photo.", user.first_name)
-	update.message.reply_text('No worries! '
-		'Please give us a little description, if possible.'
+	update.message.reply_text('No worries! \n'
+		'Please give us a little description, if possible. \n'
 		'If not, send /skip.')
 
 	return DESC
@@ -111,8 +87,8 @@ def desc(bot, update):
 def skip_desc(bot, update):
 	user = update.message.from_user
 	logger.info("User %s did not send any description.", user.first_name)
-	update.message.reply_text('No worries! '
-		'Please be calm, assistance is on the way.'
+	update.message.reply_text('No worries! \n'
+		'Please be calm, assistance is on the way. \n'
 		'What is your phone number?')
 
 	return PHONE
@@ -124,20 +100,20 @@ def phone(bot, update):
 		'Please be calm, assistance is on the way. \n'
 		'Details will be sent to you shortly.')
 
-	return DETAILS
-
-def details(bot, update):
-	user = update.message.from_user
-	logger.info("Details are being sent to %s.", user.first_name)
-	update.message.reply_text('Please be calm, assistance is on the way. \n'
-		
-
-		#DETAILS devyanshu dedo					<----------------------------------------------------------
-
-		
-		)
-
 	return ConversationHandler.END
+
+# def details(bot, update):
+# 	user = update.message.from_user
+# 	logger.info("Details are being sent to %s.", user.first_name)
+# 	update.message.reply_text('Please be calm, assistance is on the way. \n'
+		
+
+# 		#DETAILS devyanshu dedo					<----------------------------------------------------------
+
+		
+# 		)
+
+# 	return ConversationHandler.END
 
 
 def cancel(bot, update):
@@ -161,7 +137,7 @@ def main():
 
 	# Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('intro', intro)],
+		entry_points=[CommandHandler('start', start)],
 
 		states={
 			# START: [RegexHandler('^(ENTER)$', start)],
@@ -180,8 +156,6 @@ def main():
 					CommandHandler('skip', skip_desc)],
 
 			PHONE: [MessageHandler(Filters.text, phone)],
-
-			DETAILS: [MessageHandler(Filters.text, details)]
 		},
 
 		fallbacks=[CommandHandler('cancel', cancel)]
