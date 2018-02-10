@@ -16,6 +16,8 @@ def intro(bot, update):
 	reply_markup=ReplyKeyboardRemove()
 
 	update.message.reply_text('Hello, and welcome to Surakshit!')
+	reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True)
+
 
 	return START
 
@@ -164,7 +166,7 @@ def main():
 
 	# Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('intro', start)],
+		entry_points=[CommandHandler('intro', intro)],
 
 		states={
 			START: [RegexHandler('YES', assist),
