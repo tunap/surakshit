@@ -1,6 +1,5 @@
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
-						  ConversationHandler)
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
 
 import logging
 
@@ -10,56 +9,54 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-START, ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(8)
+ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(7)
 
 def intro(bot, update):
-	# reply_markup=ReplyKeyboardRemove()
-	reply_keyboard = [['ENTER']]
+	reply_keyboard = [['Fire', 'Health', 'Police']]
 
-	update.message.reply_text('Hello, and welcome to Surakshit!',
-		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-
-	return START
-
-def start(bot, update):
-	reply_keyboard = [['YES', 'NO']]
-
-	update.message.reply_text('Hello, and welcome to Surakshit!',
-		'Do you require any assistance?',
+	update.message.reply_text('Hello, and welcome to Surakshit! \n' 'Please select what kind of assistace do you require: ',
 		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 	return ASSIST
 
-def assist(bot, update):
-	reply_keyboard = [['Fire Fighters', 'Health Related', 'Police']]
+# def start(bot, update):
+# 	reply_keyboard = [['YES', 'NO']]
 
+# 	update.message.reply_text('Hello, and welcome to Surakshit!',
+# 		'Do you require any assistance?',
+# 		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+
+# 	return ASSIST
+
+# def begin(bot, update):
+# 	update.message.reply_text('Hello, and welcome to Surakshit!')
+
+# 	return ASSIST
+
+def assist(bot, update):
 	user = update.message.from_user
-	logger.info("%s requires assistance!", user.first_name, update.message.text)
-	update.message.reply_text('Please select what kind of assistace do you require: ',
-		reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True))
-	update.message.reply_text(
-		'Understood.'
-		'Please send me your location, '
-		'or send /skip if you do not want to.')
+	logger.info("%Assistance required by %s: %s", user.first_name, update.message.text)
+	update.message.reply_text('Understood. \n' 'Please send me your location, \n' 'or send /skip if you do not want to.',
+		reply_markup=ReplyKeyboardRemove())
 
 	return LOCATE
 
-def not_assist(bot, update):
-	user = update.message.from_user
-	logger.info("User %s does not require assistance.", user.first_name)
-	update.message.reply_text(
-		'Send /start if you want to re-initiate the chat!'
-		'Stay safe, Stay Happy.',
-		reply_markup=ReplyKeyboardRemove())
+# def not_assist(bot, update):
+# 	user = update.message.from_user
+# 	logger.info("User %s does not require assistance.", user.first_name)
+# 	update.message.reply_text(
+# 		'Send /start if you want to re-initiate the chat!'
+# 		'Stay safe, Stay Happy.',
+# 		reply_markup=ReplyKeyboardRemove())
 
-	return ConversationHandler.END
+# 	return ConversationHandler.END
 
 def locate(bot, update):
 	user = update.message.from_user
 	user_location = update.message.location
 	logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude)
-	update.message.reply_text('We have received your coordinates.'
-		'Please tell us the address where you require assistance.')
+	update.message.reply_text(
+		'We have received your coordinates. \n' 'Please tell us the address where you require assistance.')
 
 	return ADDRESS
 
@@ -74,9 +71,9 @@ def skip_locate(bot, update):
 def address(bot, update):
 	user = update.message.from_user###
 	logger.info("Address of %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Thank you!'
-		'Assistance is on the way.'
-		'Please send us a photograph of the condition if possible'
+	update.message.reply_text('Thank you! \n'
+		'Assistance is on the way. \n'
+		'Please send us a photograph of the condition if possible \n'
 		'or send /skip, if not.')
 
 	return PIC
@@ -87,8 +84,8 @@ def pic(bot, update):
 	photo_file = bot.get_file(update.message.photo[-1].file_id)
 	photo_file.download(str(chat_id)+'.jpg')
 	logger.info("Photo of %s: %s", user.first_name, str(chat_id)+'.jpg')
-	update.message.reply_text('Great! '
-		'Please give us a little description, if possible.'
+	update.message.reply_text('Great! \n'
+		'Please give us a little description, if possible. \n'
 		'If not, send /skip.')
 
 	return DESC
@@ -105,8 +102,8 @@ def skip_pic(bot, update):
 def desc(bot, update):
 	user = update.message.from_user
 	logger.info("Description of %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Thank you!'
-		'Please be calm, assistance is on the way.'
+	update.message.reply_text('Thank you! \n'
+		'Please be calm, assistance is on the way. \n'
 		'What is your phone number?')
 
 	return PHONE
@@ -123,8 +120,8 @@ def skip_desc(bot, update):
 def phone(bot, update):
 	user = update.message.from_user
 	logger.info("Phone number of %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Thank you!'
-		'Please be calm, assistance is on the way.'
+	update.message.reply_text('Thank you! \n'
+		'Please be calm, assistance is on the way. \n'
 		'Details will be sent to you shortly.')
 
 	return DETAILS
@@ -132,7 +129,7 @@ def phone(bot, update):
 def details(bot, update):
 	user = update.message.from_user
 	logger.info("Details are being sent to %s.", user.first_name)
-	update.message.reply_text('Please be calm, assistance is on the way.'
+	update.message.reply_text('Please be calm, assistance is on the way. \n'
 		
 
 		#DETAILS devyanshu dedo					<----------------------------------------------------------
@@ -164,25 +161,25 @@ def main():
 
 	# Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('intro', intro),
-		RegexHandler('ENTER', start)],
+		entry_points=[CommandHandler('intro', intro)],
 
 		states={
-			START: [RegexHandler('YES', assist),
-					RegexHandler('NO', not_assist)],
+			# START: [RegexHandler('^(ENTER)$', start)],
 
-			ASSIST: [MessageHandler(Filters.location, locate),
+			ASSIST: [RegexHandler('^(Fire|Health|Police)$', assist)],
+
+			LOCATE: [MessageHandler(Filters.location, locate),
 					CommandHandler('skip', skip_locate)], 
 
-			LOCATE: [MessageHandler(Filters.text, address)],
+			ADDRESS: [MessageHandler(Filters.text, address)],
 
-			ADDRESS: [MessageHandler(Filters.photo, pic),
+			PIC: [MessageHandler(Filters.photo, pic),
 					CommandHandler('skip', skip_pic)],
 
-			PIC:  [MessageHandler(Filters.text, desc),
+			DESC:  [MessageHandler(Filters.text, desc),
 					CommandHandler('skip', skip_desc)],
 
-			DESC: [MessageHandler(Filters.text, phone)],
+			PHONE: [MessageHandler(Filters.text, phone)],
 
 			DETAILS: [MessageHandler(Filters.text, details)]
 		},
