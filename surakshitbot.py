@@ -13,11 +13,10 @@ logger = logging.getLogger(__name__)
 START, ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(8)
 
 def intro(bot, update):
-	reply_markup=ReplyKeyboardRemove()
+	reply_keyboard = [['ENTER']]
 
 	update.message.reply_text('Hello, and welcome to Surakshit!')
-	reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True)
-
+	reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True)s
 
 	return START
 
