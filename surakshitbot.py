@@ -164,7 +164,7 @@ def main():
 
 	# Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
 	conv_handler = ConversationHandler(
-		entry_points=[CommandHandler('intro', intro)],
+		entry_points=[CommandHandler('intro', start)],
 
 		states={
 			START: [RegexHandler('YES', assist),
