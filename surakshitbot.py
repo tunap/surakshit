@@ -81,9 +81,10 @@ def address(bot, update):
 
 def pic(bot, update):
 	user = update.message.from_user
+	chat_id = update.message.chat_id
 	photo_file = bot.get_file(update.message.photo[-1].file_id)
-	photo_file.download('%z.jpg' %z message.chat.id)
-	logger.info("Photo of %s: %s", user.first_name, '%z.jpg' %z message.chat.id)
+	photo_file.download(str(chat_id)+'.jpg')
+	logger.info("Photo of %s: %s", user.first_name, str(chat_id)+'.jpg')
 	update.message.reply_text('Great! '
 		'Please give us a little description, if possible.'
 		'If not, send /skip.')
@@ -169,18 +170,18 @@ def main():
 			START: [RegexHandler('YES', assist),
 					RegexHandler('NO', not_assist)],
 
-			ASSIST: [MessageHandler(Filters.locate, locate),
+			ASSIST: [MessageHandler(Filters.location, locate),
 					CommandHandler('skip', skip_locate)], 
 
-			LOCATE: [MessageHandler(Filters.address, address)],
+			LOCATE: [MessageHandler(Filters.text, address)],
 
-			ADDRESS: [MessageHandler(Filters.pic, pic),
+			ADDRESS: [MessageHandler(Filters.photo, pic),
 					CommandHandler('skip', skip_pic)],
 
-			PIC:  [MessageHandler(Filters.desc, desc),
+			PIC:  [MessageHandler(Filters.text, desc),
 					CommandHandler('skip', skip_desc)],
 
-			DESC: [MessageHandler(Filters.phone, phone)],
+			DESC: [MessageHandler(Filters.text, phone)],
 
 			DETAILS: [MessageHandler(Filters.text, details)]
 		},
