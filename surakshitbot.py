@@ -53,11 +53,10 @@ def not_assist(bot, update):
 	return ConversationHandler.END
 
 def locate(bot, update):
-    user = update.message.from_user
-    user_location = update.message.location
-    logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude)
-    update.message.reply_text(
-    	'We have received your coordinates.'
+	user = update.message.from_user
+	user_location = update.message.location
+	logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude)
+    update.message.reply_text('We have received your coordinates.'
     	'Please tell us the address where you require assistance.')
 
     return ADDRESS
@@ -73,8 +72,7 @@ def skip_locate(bot, update):
 def address(bot, update):
 	user = update.message.from_user
     logger.info("Address of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text(
-    	'Thank you!'
+    update.message.reply_text('Thank you!'
     	'Assistance is on the way.'
     	'Please send us a photograph of the condition if possible'
     	'or send /skip, if not.'
@@ -87,8 +85,7 @@ def pic(bot, update):
     photo_file = bot.get_file(update.message.photo[-1].file_id)
     photo_file.download('%z.jpg' %z message.chat.id)
     logger.info("Photo of %s: %s", user.first_name, '%z.jpg' %z message.chat.id)
-    update.message.reply_text(
-    	'Great! '
+    update.message.reply_text('Great! '
     	'Please give us a little description, if possible.'
         'If not, send /skip.')
 
@@ -97,8 +94,7 @@ def pic(bot, update):
 def skip_pic(bot, update):
     user = update.message.from_user
     logger.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text(
-    	'No worries! '
+    update.message.reply_text('No worries! '
     	'Please give us a little description, if possible.'
         'If not, send /skip.')
 
@@ -107,8 +103,7 @@ def skip_pic(bot, update):
 def desc(bot, update):
     user = update.message.from_user
     logger.info("Description of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text(
-    	'Thank you!'
+    update.message.reply_text('Thank you!'
     	'Please be calm, assistance is on the way.'
     	'What is your phone number?')
 
@@ -117,8 +112,7 @@ def desc(bot, update):
 def skip_desc(bot, update):
     user = update.message.from_user
     logger.info("User %s did not send any description.", user.first_name)
-    update.message.reply_text(
-    	'No worries! '
+    update.message.reply_text('No worries! '
     	'Please be calm, assistance is on the way.'
         'What is your phone number?')
 
@@ -127,8 +121,7 @@ def skip_desc(bot, update):
 def phone(bot, update):
 	user = update.message.from_user
     logger.info("Phone number of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text(
-    	'Thank you!'
+    update.message.reply_text('Thank you!'
     	'Please be calm, assistance is on the way.'
     	'Details will be sent to you shortly.')
 
@@ -137,8 +130,7 @@ def phone(bot, update):
 def details(bot, update):
 	user = update.message.from_user
 	logger.info("Details are being sent to %s.", user.first_name)
-	update.message.reply_text(
-    	'Please be calm, assistance is on the way.'
+	update.message.reply_text('Please be calm, assistance is on the way.'
     	
 
     	#DETAILS 					<----------------------------------------------------------
