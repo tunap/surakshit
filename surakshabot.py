@@ -43,8 +43,10 @@ def start(bot, update):
 
 def depart(bot, update):
     user = update.message.from_user
-    data_d['dept']= update.message.text
-    data_d['name']=user.first_name
+    chat_id = update.message.chat_id
+    data_d['chat_id'] = chat_id
+    data_d['dept'] = update.message.text
+    data_d['name'] = user.first_name
     logger.info("Department of %s: %s", user.first_name, update.message.text)
     update.message.reply_text('I see! Please send me your phone number.',
                               reply_markup=ReplyKeyboardRemove())
