@@ -1,20 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Simple Bot to reply to Telegram messages
-# This program is dedicated to the public domain under the CC0 license.
-"""
-This Bot uses the Updater class to handle the bot.
-First, a few callback functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Example of a bot-user conversation using ConversationHandler.
-Send /start to initiate the conversation.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
-
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
@@ -27,75 +10,138 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-GENDER, PHOTO, LOCATION, BIO = range(4)
+START, ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(8)
 
 
 def start(bot, update):
-    reply_keyboard = [['Boy', 'Girl', 'Other']]
+	reply_keyboard = [['YES', 'NO']]
 
-    update.message.reply_text(
-        'Hi! My name is Professor Bot. I will hold a conversation with you. '
-        'Send /cancel to stop talking to me.\n\n'
-        'Are you a boy or a girl?',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+	update.message.reply_text(
+		'Hello, and welcome to Surakshit!'
+		'Do you require any assistance?'
+		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
-    return GENDER
+	return ASSIST
 
+def assist(bot, update):
+	reply_keyboard = [['Fire Fighters', 'Health Related', 'Police']]
 
-def gender(bot, update):
-    user = update.message.from_user
-    logger.info("Gender of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('I see! Please send me a photo of yourself, '
-                              'so I know what you look like, or send /skip if you don\'t want to.',
-                              reply_markup=ReplyKeyboardRemove())
+	user = update.message.from_user
+	logger.info("%s requires assistance!", user.first_name, update.message.text)
+	update.message.reply_text(
+		'Please select what kind of assistace do you require: '
+		reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True))
+	update.message.reply_text(
+		'Understood.'
+    	'Please send me your location, '
+    	'or send /skip if you do not want to.')
 
-    return PHOTO
+	return LOCATE
 
+def not_assist(bot, update):
+	user = update.message.from_user
+	logger.info("User %s does not require assistance.", user.first_name)
+	update.message.reply_text(
+		'Send /start if you want to re-initiate the chat!'
+		'Stay safe, Stay Happy.'
+		reply_markup=ReplyKeyboardRemove())
 
-def photo(bot, update):
-    user = update.message.from_user
-    photo_file = bot.get_file(update.message.photo[-1].file_id)
-    photo_file.download('user_photo.jpg')
-    logger.info("Photo of %s: %s", user.first_name, 'user_photo.jpg')
-    update.message.reply_text('Gorgeous! Now, send me your location please, '
-                              'or send /skip if you don\'t want to.')
+	return ConversationHandler.END
 
-    return LOCATION
-
-
-def skip_photo(bot, update):
-    user = update.message.from_user
-    logger.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text('I bet you look great! Now, send me your location please, '
-                              'or send /skip.')
-
-    return LOCATION
-
-
-def location(bot, update):
+def locate(bot, update):
     user = update.message.from_user
     user_location = update.message.location
-    logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude,
-                user_location.longitude)
-    update.message.reply_text('Maybe I can visit you sometime! '
-                              'At last, tell me something about yourself.')
+    logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude)
+    update.message.reply_text(
+    	'We have received your coordinates.'
+    	'Please tell us the address where you require assistance.')
 
-    return BIO
+    return ADDRESS
 
-
-def skip_location(bot, update):
-    user = update.message.from_user
+def skip_locate(bot, update):
+	user = update.message.from_user
     logger.info("User %s did not send a location.", user.first_name)
-    update.message.reply_text('You seem a bit paranoid! '
-                              'At last, tell me something about yourself.')
+    update.message.reply_text(
+    	'No worries. '
+        'Please tell us the address where you require assistance.')
 
-    return BIO
+    return ADDRESS
 
+def address(bot, update):
+	user = update.message.from_user
+    logger.info("Address of %s: %s", user.first_name, update.message.text)
+    update.message.reply_text(
+    	'Thank you!'
+    	'Assistance is on the way.'
+    	'Please send us a photograph of the condition if possible'
+    	'or send /skip, if not.'
+    	)
 
-def bio(bot, update):
+    return PIC
+
+def pic(bot, update):
     user = update.message.from_user
-    logger.info("Bio of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('Thank you! I hope we can talk again some day.')
+    photo_file = bot.get_file(update.message.photo[-1].file_id)
+    photo_file.download('%z.jpg' %z message.chat.id)
+    logger.info("Photo of %s: %s", user.first_name, '%z.jpg' %z message.chat.id)
+    update.message.reply_text(
+    	'Great! '
+    	'Please give us a little description, if possible.'
+        'If not, send /skip.')
+
+    return DESC
+
+def skip_pic(bot, update):
+    user = update.message.from_user
+    logger.info("User %s did not send a photo.", user.first_name)
+    update.message.reply_text(
+    	'No worries! '
+    	'Please give us a little description, if possible.'
+        'If not, send /skip.')
+
+    return DESC
+
+def desc(bot, update):
+    user = update.message.from_user
+    logger.info("Description of %s: %s", user.first_name, update.message.text)
+    update.message.reply_text(
+    	'Thank you!'
+    	'Please be calm, assistance is on the way.'
+    	'What is your phone number?')
+
+    return PHONE
+
+def skip_desc(bot, update):
+    user = update.message.from_user
+    logger.info("User %s did not send any description.", user.first_name)
+    update.message.reply_text(
+    	'No worries! '
+    	'Please be calm, assistance is on the way.'
+        'What is your phone number?')
+
+    return PHONE
+
+def phone(bot, update):
+	user = update.message.from_user
+    logger.info("Phone number of %s: %s", user.first_name, update.message.text)
+    update.message.reply_text(
+    	'Thank you!'
+    	'Please be calm, assistance is on the way.'
+    	'Details will be sent to you shortly.')
+
+    return DETAILS
+
+def details(bot, update):
+	user = update.message.from_user
+	logger.info("Details are being sent to %s.", user.first_name)
+	update.message.reply_text(
+    	'Please be calm, assistance is on the way.'
+    	
+
+    	#DETAILS 					<----------------------------------------------------------
+
+    	
+    	)
 
     return ConversationHandler.END
 
@@ -107,8 +153,6 @@ def cancel(bot, update):
                               reply_markup=ReplyKeyboardRemove())
 
     return ConversationHandler.END
-
-
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
@@ -126,15 +170,23 @@ def main():
         entry_points=[CommandHandler('start', start)],
 
         states={
-            GENDER: [RegexHandler('^(Boy|Girl|Other)$', gender)],
+            START: [RegexHandler('YES', assist),
+            		RegexHandler('NO', not_assist)],
 
-            PHOTO: [MessageHandler(Filters.photo, photo),
-                    CommandHandler('skip', skip_photo)],
+            ASSIST: [MessageHandler(Filters.locate, locate),
+                    CommandHandler('skip', skip_locate)], 
 
-            LOCATION: [MessageHandler(Filters.location, location),
-                       CommandHandler('skip', skip_location)],
+            LOCATE: [MessageHandler(Filters.address, address)],
 
-            BIO: [MessageHandler(Filters.text, bio)]
+            ADDRESS: [MessageHandler(Filters.pic, pic),
+            		CommandHandler('skip', skip_pic)],
+
+            PIC:  [MessageHandler(Filters.desc, desc),
+            		CommandHandler('skip', skip_desc)],
+
+            DESC: [MessageHandler(Filters.phone, phone)],
+
+            DETAILS: [MessageHandler(Filters.text, details)]
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
