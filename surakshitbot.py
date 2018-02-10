@@ -135,7 +135,7 @@ def details(bot, update):
 	update.message.reply_text('Please be calm, assistance is on the way.'
 		
 
-		#DETAILS 					<----------------------------------------------------------
+		#DETAILS devyanshu dedo					<----------------------------------------------------------
 
 		
 		)
