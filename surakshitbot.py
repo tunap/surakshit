@@ -16,7 +16,7 @@ def intro(bot, update):
 	reply_keyboard = [['ENTER']]
 
 	update.message.reply_text('Hello, and welcome to Surakshit!')
-	reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True)s
+	reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 	return START
 
