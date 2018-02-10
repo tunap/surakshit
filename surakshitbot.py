@@ -13,11 +13,11 @@ logger = logging.getLogger(__name__)
 START, ASSIST, LOCATE, ADDRESS, PIC, DESC, PHONE, DETAILS = range(8)
 
 def intro(bot, update):
-	reply_markup=ReplyKeyboardRemove()
+	# reply_markup=ReplyKeyboardRemove()
 	reply_keyboard = [['ENTER']]
 
-	update.message.reply_text('Hello, and welcome to Surakshit!')
-	reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+	update.message.reply_text('Hello, and welcome to Surakshit!',
+		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 	return START
 
@@ -25,8 +25,8 @@ def start(bot, update):
 	reply_keyboard = [['YES', 'NO']]
 
 	update.message.reply_text('Hello, and welcome to Surakshit!',
-		'Do you require any assistance?')
-	reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+		'Do you require any assistance?',
+		reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 	return ASSIST
 
@@ -35,8 +35,8 @@ def assist(bot, update):
 
 	user = update.message.from_user
 	logger.info("%s requires assistance!", user.first_name, update.message.text)
-	update.message.reply_text('Please select what kind of assistace do you require: ')
-	reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True)
+	update.message.reply_text('Please select what kind of assistace do you require: ',
+		reply_markup=ReplyKeyboardRemove(reply_keyboard, one_time_keyboard=True))
 	update.message.reply_text(
 		'Understood.'
 		'Please send me your location, '
@@ -49,8 +49,8 @@ def not_assist(bot, update):
 	logger.info("User %s does not require assistance.", user.first_name)
 	update.message.reply_text(
 		'Send /start if you want to re-initiate the chat!'
-		'Stay safe, Stay Happy.')
-	reply_markup=ReplyKeyboardRemove()
+		'Stay safe, Stay Happy.',
+		reply_markup=ReplyKeyboardRemove())
 
 	return ConversationHandler.END
 
@@ -146,8 +146,8 @@ def details(bot, update):
 def cancel(bot, update):
 	user = update.message.from_user
 	logger.info("User %s canceled the conversation.", user.first_name)
-	update.message.reply_text('Bye! I hope we can talk again some day.',)
-	reply_markup=ReplyKeyboardRemove()
+	update.message.reply_text('Bye! I hope we can talk again some day.',
+		reply_markup=ReplyKeyboardRemove())
 
 	return ConversationHandler.END
 def error(bot, update, error):
