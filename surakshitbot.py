@@ -135,14 +135,14 @@ def phone(bot, update):
                         update.message.reply_text(
                                 'Assistance is on the way.\n'+'Name: '+f_prov['name']+'\nPhone: '+f_prov['mobile']
                                 )
-                        bot.send_message(chat_id=f_prov['chat_id'], text=str(user.first_name)+' @'+data_d['loc']+' needs your help, Phone: '+data_d['mobile']+', Photo labels: '+data_d['description'])
+                        bot.send_message(chat_id=f_prov['chat_id'], text=str(user.first_name)+' @'+data_d['loc']+' needs your help. \n Phone: '+data_d['mobile']+', \n Photo labels: '+data_d['description'])
                         return ConversationHandler.END
 
 
 def cancel(bot, update):
 	user = update.message.from_user
 	logger.info("User %s canceled the conversation.", user.first_name)
-	update.message.reply_text('Bye! I hope we can talk again some day.',
+	update.message.reply_text('Send /start when you need assistance.',
 		reply_markup=ReplyKeyboardRemove())
 
 	return ConversationHandler.END
