@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
 import logging
 from firebase import firebase
 from haversine import haversine
+import io
+import os
+import google.cloud.vision
 firebase = firebase.FirebaseApplication('https://surakshit-11.firebaseio.com')
 data_d={}
 def retLL(dct):
@@ -37,7 +37,7 @@ def assist(bot, update):
 	user = update.message.from_user
 	data_d['dept']=update.message.text
 	logger.info("Assistance required by %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Understood. \n' 'Please send me your location.',
+	update.message.reply_text('Understood. \n' 'Please send me your location, \n' 'or send /skip if you do not want to.',
 		reply_markup=ReplyKeyboardRemove())
 
 	return LOCATE
@@ -64,17 +64,27 @@ def address(bot, update):
 	return PIC
 
 def pic(bot, update):
-	user = update.message.from_user
-	chat_id = update.message.chat_id
-	data_d['chat-id']=chat_id
-	photo_file = bot.get_file(update.message.photo[-1].file_id)
-	photo_file.download(str(chat_id)+'.jpg')
-	logger.info("Photo of %s: %s", user.first_name, str(chat_id)+'.jpg')
-	update.message.reply_text('Great! \n'
-		'Please give us a little description, if possible. \n'
-		'If not, send /skip.')
+    user = update.message.from_user
+    chat_id = update.message.chat_id
+    data_d['chat-id']=chat_id
+    photo_file = bot.get_file(update.message.photo[-1].file_id)
+    photo_file.download(str(chat_id)+'.jpg')
+    vision_client = google.cloud.vision.ImageAnnotatorClient()
 
-	return DESC
+    with io.open(str(chat_id)+'.jpg', 'rb') as image_file:
+        content = image_file.read()
+    image = google.cloud.vision.types.Image(content=content)
+    response = vision_client.label_detection(image=image)
+    lab=[]
+    for label in response.label_annotations:
+        lab.append(label.description)    
+    data_d['description'] = ','.join(lab)
+    logger.info("Photo of %s: %s", user.first_name, str(chat_id)+'.jpg')
+    update.message.reply_text('Great! \n'
+    'Please give us a little description, if possible. \n'
+    'If not, send /skip.')
+
+    return DESC
 
 def skip_pic(bot, update):
 	user = update.message.from_user
@@ -125,6 +135,7 @@ def phone(bot, update):
                         update.message.reply_text(
                                 'Assistance is on the way.\n'+'Name: '+f_prov['name']+'\nPhone: '+f_prov['mobile']
                                 )
+                        bot.send_message(chat_id=f_prov['chat_id'], text=str(user.first_name)+' @'+data_d['loc']+' needs your help, Phone: '+data_d['mobile']+', Photo labels: '+data_d['description'])
                         return ConversationHandler.END
 
 # def details(bot, update):

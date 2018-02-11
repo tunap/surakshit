@@ -6,6 +6,7 @@
 body{
  background-image: url(back.jpg);
   background-attachment: fixed;
+  color:white;
 }
 .target-btns-container{
  display: flex;
@@ -17,7 +18,7 @@ body{
   font-weight: bold;
   line-height: 100%;
   color: #fff;
-  background: #a9a9a9;
+  background: #273f61;
   border-radius: 22px;
   overflow: hidden;
   display: inline-block;
