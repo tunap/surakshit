@@ -37,7 +37,7 @@ def assist(bot, update):
 	user = update.message.from_user
 	data_d['dept']=update.message.text
 	logger.info("Assistance required by %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Understood. \n' 'Please send me your location, \n' 'or send /skip if you do not want to.',
+	update.message.reply_text('Understood. \n' 'Please send me your location.',
 		reply_markup=ReplyKeyboardRemove())
 
 	return LOCATE
