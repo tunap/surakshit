@@ -1,3 +1,35 @@
 https://github.com/python-telegram-bot/python-telegram-bot/wiki/Extensions-%E2%80%93-Your-first-Bot
 
 https://stackoverflow.com/questions/31078710/how-to-obtain-telegram-chat-id-for-a-specific-user/34440247
+
+
+
+About the program:
+	The <i>Surakshit</i> and <i>Surakhsa</i> programs were initiated for the people, by the people and of the people. It plans to unite the Fire control department, Health department and Police department at singular platform and get assistance wherever necessary, whenever necessary.
+
+Fire:
+	24x7 Fire management, with an almost full coverage of the country. The department with ever increasing numbers, constantly improving  and never stopping, fights a big fight for us. It is an organisation that provides predominantly emergency firefighting and fire protection services for a specific geographic area respective to each fire station.
+
+Health:
+	Operating separately from (although alongside) the fire and police service of the area, these ambulances are funded by local or national government. The Health department tries to increase efficiency of first aid and administering emergency care to those with acute medical problems. At the same time it tries to reduce the response times.
+
+Police: 
+	The pride of the country, the police force works hard and without error to protect the citizens from any harm. It is their duty to prevent crime, and solve them if any do occur. Our service helps reduce response time for police to arrive at the location of the crime, and provide assistance as soon as possible. 
+
+
+If you need emergency assistance, dial 911 immediately. Emergency assistance is not available through the National 911 Program.
+The 911.gov website is maintained by the National 911 Program, which is housed within the National Highway Traffic Safety Administration's Office of Emergency Medical Services.
+
+If you need emergency assistance, access Surakhsit immediately.
+Emergency assistance is not possible through the program, if details are not properly provided. So we encourage you to provide the maximum amount of details as possible.
+
+The surakshit.tech website is maintained by the BennettCoders Chapter, targeting the safety of every citizen in the country.
+
+
+
+Surakshit and Suraksha are fully automated chatbots, removing both the need and unfortunate errors of human participation. With use of advanced technologies including automated chatting, cloud services based image recognition and analysis, SMS pushing services, real time updation of all the databases being used, and fully integrated execution.
+
+
+
+The Surakshit initiative consists of the Surakshit and the Suraksha programs. 
+The <u>Surakshit</u> program targets providing assistance to the ones in need, while the <u>Surakhsa</u> program targets proving that very assistance and registration in the program.
