@@ -8,7 +8,7 @@ body{
 }
 .target-btns-container{
  display: flex;
- flex flex-direction: row;
+ flex-direction: row;
  justify-content: center;
 }
 .target-btns{
