@@ -1,8 +1,19 @@
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
-
 import logging
-
+from firebase import firebase
+from haversine import haversine
+firebase = firebase.FirebaseApplication('https://surakshit-11.firebaseio.com')
+data_d={}
+def retLL(dct):
+    x=dct['loc']
+    #print(x)
+    x=x.split(',')
+    x=list(map(float,x))
+    v=haversine(tuple(x),(28.450156, 77.58508))
+    print(v)
+    return  v
+    
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
@@ -21,7 +32,8 @@ def start(bot, update):
 
 def assist(bot, update):
 	user = update.message.from_user
-	logger.info("%Assistance required by %s: %s", user.first_name, update.message.text)
+	data_d['dept']=update.message.text
+	logger.info("Assistance required by %s: %s", user.first_name, update.message.text)
 	update.message.reply_text('Understood. \n' 'Please send me your location, \n' 'or send /skip if you do not want to.',
 		reply_markup=ReplyKeyboardRemove())
 
@@ -30,22 +42,16 @@ def assist(bot, update):
 def locate(bot, update):
 	user = update.message.from_user
 	user_location = update.message.location
+	data_d['loc']=str(user_location.latitude)+','+str(user_location.longitude)
 	logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude)
 	update.message.reply_text(
 		'We have received your coordinates. \n' 'Please tell us the address where you require assistance.')
 
 	return ADDRESS
 
-def skip_locate(bot, update):
-	user = update.message.from_user
-	logger.info("User %s did not send a location.", user.first_name)
-	update.message.reply_text('No worries. \n'
-		'Please tell us the address where you require assistance.')
-
-	return ADDRESS
-
 def address(bot, update):
 	user = update.message.from_user###
+	data_d['address']=update.message.text
 	logger.info("Address of %s: %s", user.first_name, update.message.text)
 	update.message.reply_text('Thank you! \n'
 		'Assistance is on the way. \n'
@@ -57,6 +63,7 @@ def address(bot, update):
 def pic(bot, update):
 	user = update.message.from_user
 	chat_id = update.message.chat_id
+	data_d['chat-id']=chat_id
 	photo_file = bot.get_file(update.message.photo[-1].file_id)
 	photo_file.download(str(chat_id)+'.jpg')
 	logger.info("Photo of %s: %s", user.first_name, str(chat_id)+'.jpg')
@@ -77,6 +84,7 @@ def skip_pic(bot, update):
 
 def desc(bot, update):
 	user = update.message.from_user
+	data_d['description']= update.message.text
 	logger.info("Description of %s: %s", user.first_name, update.message.text)
 	update.message.reply_text('Thank you! \n'
 		'Please be calm, assistance is on the way. \n'
@@ -94,13 +102,27 @@ def skip_desc(bot, update):
 	return PHONE
 
 def phone(bot, update):
-	user = update.message.from_user
-	logger.info("Phone number of %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Thank you! \n'
-		'Please be calm, assistance is on the way. \n'
-		'Details will be sent to you shortly.')
-
-	return ConversationHandler.END
+                        user = update.message.from_user
+                        data_d['mobile']= update.message.text
+                        logger.info("Phone number of %s: %s", user.first_name, update.message.text)
+                        result =firebase.post('/users',data_d)
+                        suit_prov=[]
+                        prov = firebase.get('/provider',None)
+                        for i in prov:
+                                #print(prov)
+                                if prov[i]['dept']==data_d['dept']:
+                                        suit_prov.append(prov[i])
+                                #print(suit_prov)
+                        suit_prov.sort(key=retLL)
+                        print(suit_prov)
+                        f_prov=suit_prov[0]
+                        update.message.reply_text('Thank you! \n'
+                        'Please be calm, assistance is on the way. \n'
+                        'Details will be sent to you shortly.')
+                        update.message.reply_text(
+                                'Assistance is on the way.\n'+'Name: '+f_prov['name']+'\nPhone: '+f_prov['mobile']
+                                )
+                        return ConversationHandler.END
 
 # def details(bot, update):
 # 	user = update.message.from_user
@@ -144,8 +166,7 @@ def main():
 
 			ASSIST: [RegexHandler('^(Fire|Health|Police)$', assist)],
 
-			LOCATE: [MessageHandler(Filters.location, locate),
-					CommandHandler('skip', skip_locate)], 
+			LOCATE: [MessageHandler(Filters.location, locate)], 
 
 			ADDRESS: [MessageHandler(Filters.text, address)],
 
