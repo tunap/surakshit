@@ -4,7 +4,8 @@
  
 }
 body{
- background-color:white;
+ background-image: url(back.jpg);
+  background-attachment: fixed;
 }
 .target-btns-container{
  display: flex;
@@ -15,12 +16,12 @@ body{
   font-size: 14px;
   font-weight: bold;
   line-height: 100%;
-  color: #FFF;
-  background: #5dc390;
+  color: #fff;
+  background: #a9a9a9;
   border-radius: 22px;
   overflow: hidden;
   display: inline-block;
-  margin:5 5 5 5; 
+  margin:8 10 8 10; 
   padding: 15px 27px 13px;
   font-family: 'Rubik', sans-serif;
   text-transform: uppercase;
