@@ -37,7 +37,7 @@ def assist(bot, update):
 	user = update.message.from_user
 	data_d['dept']=update.message.text
 	logger.info("Assistance required by %s: %s", user.first_name, update.message.text)
-	update.message.reply_text('Understood. \n' 'Please send me your location, \n' 'or send /skip if you do not want to.',
+	update.message.reply_text('Understood. \n' 'Please send me your location.',
 		reply_markup=ReplyKeyboardRemove())
 
 	return LOCATE
@@ -137,19 +137,6 @@ def phone(bot, update):
                                 )
                         bot.send_message(chat_id=f_prov['chat_id'], text=str(user.first_name)+' @'+data_d['loc']+' needs your help, Phone: '+data_d['mobile']+', Photo labels: '+data_d['description'])
                         return ConversationHandler.END
-
-# def details(bot, update):
-# 	user = update.message.from_user
-# 	logger.info("Details are being sent to %s.", user.first_name)
-# 	update.message.reply_text('Please be calm, assistance is on the way. \n'
-		
-
-# 		#DETAILS devyanshu dedo					<----------------------------------------------------------
-
-		
-# 		)
-
-# 	return ConversationHandler.END
 
 
 def cancel(bot, update):
