@@ -1,0 +1,52 @@
+.mainlogo{ 
+ height:auto; 
+ width:100%;
+ 
+}
+body{
+ background-color:white;
+}
+.target-btns-container{
+ display: flex;
+ flex flex-direction: row;
+ justify-content: center;
+}
+.target-btns{
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 100%;
+  color: #FFF;
+  background: #5dc390;
+  border-radius: 22px;
+  overflow: hidden;
+  display: inline-block;
+  margin:5 5 5 5; 
+  padding: 15px 27px 13px;
+  font-family: 'Rubik', sans-serif;
+  text-transform: uppercase;
+  font-size:2vmax; 
+}
+.products{
+ text-align: center;
+ align-content: center;
+ width: auto;
+ height: auto;
+}
+.product-heading{
+  font-family: 'Roboto Slab', sans-serif;
+ font-weight: 500;
+ font-size: 3.5vmax;
+}
+.product-container{
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+}
+.end-credit{
+ text-align: center;
+ font-size:2vmax;
+}
+li{
+ font-size:2vmin; 
+ margin-bottom: 5;
+}
