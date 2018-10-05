@@ -13,7 +13,7 @@ The user can send all the necessary details about the emergency from the **Surak
 
 We used **Firebase** to store registrations from the Suraksha bot and **Haversine Formula** for calculating the nearest distance.
 
-Creadted by:
+This project was created by:
 1. Devyanshu Shukla
 2. Tunap Paul
 3. ManinderJeet Singh
