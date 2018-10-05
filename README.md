@@ -12,3 +12,8 @@ First, the authority has to register themselves using the **Suraksha** bot, once
 The user can send all the necessary details about the emergency from the **Surakshit** bot to the nearest authority. 
 
 We used **Firebase** to store registrations from the Suraksha bot and **Haversine Formula** for calculating the nearest distance.
+
+Creadted by:
+1. Devyanshu Shukla
+2. Tunap Paul
+3. ManinderJeet Singh
