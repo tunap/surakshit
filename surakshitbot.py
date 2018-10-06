@@ -9,17 +9,16 @@ import os
 import google.cloud.vision
 
 
-firebase = firebase.FirebaseApplication('https://surakshit-11.firebaseio.com')
+firebase = firebase.FirebaseApplication('your-firebase-database-link')
 data_d={}
 
 
-def retLL(dct):
+def returnDistance(dct):
     x=dct['loc']
-    #print(x)
     x=x.split(',')
     x=list(map(float,x))
     v=haversine(tuple(x),(28.450156, 77.58508))
-    print(v)
+    
     return  v
     
 
@@ -61,7 +60,7 @@ def locate(bot, update):
 	return ADDRESS
 
 def address(bot, update):
-	user = update.message.from_user###
+	user = update.message.from_user
 	data_d['address']=update.message.text
 	logger.info("Address of %s: %s", user.first_name, update.message.text)
 	update.message.reply_text('Thank you! \n'
@@ -134,9 +133,8 @@ def phone(bot, update):
                                 if prov[i]['dept']==data_d['dept']:
                                         suit_prov.append(prov[i])
                                 #print(suit_prov)
-                        suit_prov.sort(key=retLL)
-                        print(suit_prov)
-                        f_prov=suit_prov[0]
+                        suitable_provider.sort(key=returnDistance)
+                        f_prov=suitable_provider[0]
                         update.message.reply_text('Thank you! \n'
                         'Please be calm, assistance is on the way. \n'
                         'Details will be sent to you shortly.')
@@ -207,4 +205,4 @@ def main():
 
 
 if __name__ == '__main__':
-	main()
+    main()

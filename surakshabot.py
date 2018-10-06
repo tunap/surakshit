@@ -7,7 +7,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 from firebase import firebase
-firebase = firebase.FirebaseApplication('https://surakshit-11.firebaseio.com')
+firebase = firebase.FirebaseApplication('your-firebase-database-link')
 data_d={}
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
